@@ -1,15 +1,13 @@
-
-
 namespace NewProject
 {
     public partial class MainForm : Form
     {
-        List<CustomerDataGridView> list;
+        private readonly List<CustomerDataGridView> customerList;
 
         public MainForm()
         {
             InitializeComponent();
-            list = new List<CustomerDataGridView>();
+            customerList = new List<CustomerDataGridView>();
         }
 
         private void BtnClose_Click(object sender, EventArgs e)
@@ -24,22 +22,16 @@ namespace NewProject
 
         private void BtnAdd_Click(object sender, EventArgs e)
         {
-            CustomerDataGridView customerDataGridView = new CustomerDataGridView();
+            var customerDataGridView = new CustomerDataGridView();
+            using var registrationForm = new RegistrationForm(customerDataGridView);
 
-            using (RegistrationForm form2 = new RegistrationForm(customerDataGridView))
+            if (registrationForm.ShowDialog() == DialogResult.OK)
             {
-                if (form2.ShowDialog() == DialogResult.OK)
-                {
-                    DgvCustomer.DataSource = null;
+                customerList.Add(customerDataGridView);
 
-                    list.Add(customerDataGridView);
-
-                    DgvCustomer.DataSource = list; 
-                    DgvCustomer.Refresh();
-                    DgvCustomer.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
-
-                }
-            }
+                DgvCustomer.DataSource = customerList.ToList();
+                DgvCustomer.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+            }            
         }
     }
 }

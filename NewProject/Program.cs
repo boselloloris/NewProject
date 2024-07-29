@@ -11,6 +11,15 @@ namespace NewProject
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
+
+            using var splash = new SplashForm();
+            splash.Show();
+            splash.Refresh();
+
+            Thread.Sleep(3000);
+
+            splash.Close();
+
             Application.Run(new MainForm());
         }
     }
